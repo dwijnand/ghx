@@ -1,19 +1,22 @@
-import SbtMisc._
-
 lazy val ghx = project in file(".")
 
-organization := "com.dwijnand"
-     version := "1.0.0-SNAPSHOT"
-    licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
-   startYear := Some(2016)
- description := "GitHub Extras"
-     scmInfo := Some(ScmInfo(url("https://github.com/dwijnand/ghx"), "scm:git:git@github.com:dwijnand/ghx.git"))
-    homepage := scmInfo.value map (_.browseUrl)
+organization in Global := "com.dwijnand"
+     version in Global := "1.0.0-SNAPSHOT"
+    licences in Global := Seq(Apache2)
+   startYear in Global := Some(2016)
+ description in Global := "GitHub Extras"
+  developers in Global := List(Developer("dwijnand", "Dale Wijnand", "dale wijnand gmail com", url("https://dwijnand.com")))
+     scmInfo in Global := Some(ScmInfo(url("https://github.com/dwijnand/ghx"), "scm:git:git@github.com:dwijnand/ghx.git"))
+
+scala211 in Global := "2.11.8"
+
+      scalaVersion := scala211.value
+crossScalaVersions := Seq(scala211.value)
 
 enablePlugins(ScalaJSPlugin)
 
-   scalaVersion in Global := "2.11.8"
-scalaJSUseRhino in Global := false
+ scalaJSUseRhino in Global := false
+isScalaJSProject in Global := false
 
        maxErrors := 15
 triggeredMessage := Watched.clearWhenTriggered
@@ -25,7 +28,6 @@ scalacOptions  += "-language:higherKinds"
 scalacOptions  += "-language:implicitConversions"
 scalacOptions  += "-language:postfixOps"
 scalacOptions  += "-Xfuture"
-scalacOptions  += "-Yinline-warnings"
 scalacOptions  += "-Yno-adapted-args"
 scalacOptions  += "-Ywarn-dead-code"
 scalacOptions  += "-Ywarn-numeric-widen"
@@ -36,7 +38,7 @@ scalacOptions  += "-Ywarn-value-discard"
 scalacOptions in (Compile, console) -= "-Ywarn-unused-import"
 scalacOptions in (Test,    console) -= "-Ywarn-unused-import"
 
-libraryDependencies += "fr.hmil" %%% "roshttp" % "1.0.0"
+libraryDependencies += "fr.hmil" %%% "roshttp" % "1.0.1"
 
 initialCommands in console += "\nimport ghx._"
 
@@ -49,8 +51,6 @@ cancelable in Global := true
 
 noDocs
 noArtifacts
-
-isScalaJSProject in Global := false
 
 watchSources ++= (baseDirectory.value * "*.sbt").get
 watchSources ++= (baseDirectory.value / "project" * "*.scala").get
