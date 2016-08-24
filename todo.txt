@@ -1,10 +1,9 @@
+* compare tags, listing pull requests and loose commits
+* minimal fork: z orphan branch
 * delete merged branches, belonging to repo owner (user or org)
   - check branches on repo, delete if merged
 * update fork, add/remove branches/tags
   - for all branches, find remote branch, ff merge, push
 * delete fork that has nothing addtional
   - if all branches' head are in remote repo, delete
-* compare tags, listing pull requests and loose commits
-* minimal fork: z orphan branch
-* jcabi-github
 * notify upstream pushed commits, branches or tags
