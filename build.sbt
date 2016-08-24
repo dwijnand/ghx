@@ -55,8 +55,11 @@ libraryDependencies in coreJS  += "io.circe" %%% "circe-parser"  % circeVersion.
 libraryDependencies in coreJVM += "fr.hmil"  %%% "roshttp"       % "1.0.1"
 libraryDependencies in coreJS  += "fr.hmil"  %%% "roshttp"       % "1.0.1"
 
+libraryDependencies in repl += "com.dwijnand" %% "tabular" % "0.1.0"
+
 initialCommands in Global in console += "\nimport ghx._"
 initialCommands in repl   in console += "\nimport ghx.repl._"
+initialCommands in repl   in console += "\nimport tabular._"
 
 console in Compile := (console in Compile in repl).value
 console in Test    := (console in Test    in repl).value
