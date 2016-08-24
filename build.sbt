@@ -1,8 +1,10 @@
-lazy val ghx = project in file(".") aggregate core
+lazy val ghx = project in file(".") aggregate (coreJVM, coreJS)
 
-val core = setup(project)
+val core    = crossProject crossType CrossType.Pure configureAll setup
+val coreJVM = core.jvm
+val coreJS  = core.js
 
-def setup(p: Project) = p settings (name := s"ghx-${p.id}")
+def setup(p: Project) = p settings (name := s"ghx-${name.value}")
 
 organization in Global := "com.dwijnand"
         name in Global := "ghx"
@@ -19,8 +21,6 @@ crossScalaVersions in Global := Seq(scala211.value)
 
  scalaJSUseRhino in Global := false
 isScalaJSProject in Global := false
-
-enablePlugins(ScalaJSPlugin)
 
        maxErrors in Global := 15
 triggeredMessage in Global := Watched.clearWhenTriggered
@@ -41,7 +41,8 @@ scalacOptions in Global  += "-Ywarn-value-discard"
 
 scalacOptions in Global in console -= "-Ywarn-unused-import"
 
-libraryDependencies in core += "fr.hmil" %%% "roshttp" % "1.0.1"
+libraryDependencies in coreJVM += "fr.hmil" %%% "roshttp" % "1.0.1"
+libraryDependencies in coreJS  += "fr.hmil" %%% "roshttp" % "1.0.1"
 
 initialCommands in Global in console += "\nimport ghx._"
 initialCommands                      -= "\nimport ghx._" // root project doesn't contain ghx
