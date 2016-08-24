@@ -4,6 +4,8 @@ val core    = crossProject crossType CrossType.Pure configureAll setup
 val coreJVM = core.jvm
 val coreJS  = core.js
 
+val repl = project configure setup dependsOn coreJVM
+
 def setup(p: Project) = p settings (name := s"ghx-${name.value}")
 
 organization in Global := "com.dwijnand"
@@ -54,7 +56,10 @@ libraryDependencies in coreJVM += "fr.hmil"  %%% "roshttp"       % "1.0.1"
 libraryDependencies in coreJS  += "fr.hmil"  %%% "roshttp"       % "1.0.1"
 
 initialCommands in Global in console += "\nimport ghx._"
-initialCommands                      -= "\nimport ghx._" // root project doesn't contain ghx
+initialCommands in repl   in console += "\nimport ghx.repl._"
+
+console in Compile := (console in Compile in repl).value
+console in Test    := (console in Test    in repl).value
 
              fork in Global in Test := false
       logBuffered in Global in Test := false
@@ -65,3 +70,4 @@ cancelable in Global        := true
 
 noDocs in Global
 noArtifacts
+noArtifacts in repl
