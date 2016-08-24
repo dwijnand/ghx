@@ -93,19 +93,7 @@ object MiscPlugin extends AutoPlugin {
   override def globalSettings = Seq(
     licenses := Nil,
     Def derive (licenses := licences.value map (l => l.name -> l.url)),
-    Def derive (homepage := scmInfo.value map (_.browseUrl)),
-    Def derive (pomExtra := pomExtra.value ++ {
-      <developers>
-        { developers.value.map { developer =>
-          <developer>
-            <id>{ developer.id }</id>
-            <name>{ developer.name }</name>
-            <email>{ developer.email }</email>
-            <url>{ developer.url }</url>
-          </developer>
-        }}
-      </developers>
-    })
+    Def derive (homepage := scmInfo.value map (_.browseUrl))
   )
 }
 
