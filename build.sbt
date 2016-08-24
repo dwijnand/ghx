@@ -1,56 +1,57 @@
-lazy val ghx = project in file(".")
+lazy val ghx = project in file(".") aggregate core
+
+val core = setup(project)
+
+def setup(p: Project) = p settings (name := s"ghx-${p.id}")
 
 organization in Global := "com.dwijnand"
+        name in Global := "ghx"
      version in Global := "1.0.0-SNAPSHOT"
     licences in Global := Seq(Apache2)
    startYear in Global := Some(2016)
  description in Global := "GitHub Extras"
   developers in Global := List(Developer("dwijnand", "Dale Wijnand", "dale wijnand gmail com", url("https://dwijnand.com")))
-     scmInfo in Global := Some(ScmInfo(url("https://github.com/dwijnand/ghx"), "scm:git:git@github.com:dwijnand/ghx.git"))
+     scmInfo in Global := Some(ScmInfo(url(s"https://github.com/dwijnand/ghx"), "scm:git:git@github.com:dwijnand/ghx.git"))
 
-scala211 in Global := "2.11.8"
-
-      scalaVersion := scala211.value
-crossScalaVersions := Seq(scala211.value)
-
-enablePlugins(ScalaJSPlugin)
+          scala211 in Global := "2.11.8"
+      scalaVersion in Global := scala211.value
+crossScalaVersions in Global := Seq(scala211.value)
 
  scalaJSUseRhino in Global := false
 isScalaJSProject in Global := false
 
-       maxErrors := 15
-triggeredMessage := Watched.clearWhenTriggered
+enablePlugins(ScalaJSPlugin)
 
-scalacOptions ++= "-encoding utf8"
-scalacOptions ++= "-deprecation -feature -unchecked -Xlint"
-scalacOptions  += "-language:experimental.macros"
-scalacOptions  += "-language:higherKinds"
-scalacOptions  += "-language:implicitConversions"
-scalacOptions  += "-language:postfixOps"
-scalacOptions  += "-Xfuture"
-scalacOptions  += "-Yno-adapted-args"
-scalacOptions  += "-Ywarn-dead-code"
-scalacOptions  += "-Ywarn-numeric-widen"
-scalacOptions  += "-Ywarn-unused"
-scalacOptions  += "-Ywarn-unused-import"
-scalacOptions  += "-Ywarn-value-discard"
+       maxErrors in Global := 15
+triggeredMessage in Global := Watched.clearWhenTriggered
 
-scalacOptions in (Compile, console) -= "-Ywarn-unused-import"
-scalacOptions in (Test,    console) -= "-Ywarn-unused-import"
+scalacOptions in Global ++= "-encoding utf8"
+scalacOptions in Global ++= "-deprecation -feature -unchecked -Xlint"
+scalacOptions in Global  += "-language:experimental.macros"
+scalacOptions in Global  += "-language:higherKinds"
+scalacOptions in Global  += "-language:implicitConversions"
+scalacOptions in Global  += "-language:postfixOps"
+scalacOptions in Global  += "-Xfuture"
+scalacOptions in Global  += "-Yno-adapted-args"
+scalacOptions in Global  += "-Ywarn-dead-code"
+scalacOptions in Global  += "-Ywarn-numeric-widen"
+scalacOptions in Global  += "-Ywarn-unused"
+scalacOptions in Global  += "-Ywarn-unused-import"
+scalacOptions in Global  += "-Ywarn-value-discard"
 
-libraryDependencies += "fr.hmil" %%% "roshttp" % "1.0.1"
+scalacOptions in Global in console -= "-Ywarn-unused-import"
 
-initialCommands in console += "\nimport ghx._"
+libraryDependencies in core += "fr.hmil" %%% "roshttp" % "1.0.1"
 
-             fork in Test := false
-      logBuffered in Test := false
-parallelExecution in Test := true
+initialCommands in Global in console += "\nimport ghx._"
+initialCommands                      -= "\nimport ghx._" // root project doesn't contain ghx
 
-         fork in run := true
-cancelable in Global := true
+             fork in Global in Test := false
+      logBuffered in Global in Test := false
+parallelExecution in Global in Test := true
 
-noDocs
+      fork in Global in run := true
+cancelable in Global        := true
+
+noDocs in Global
 noArtifacts
-
-watchSources ++= (baseDirectory.value * "*.sbt").get
-watchSources ++= (baseDirectory.value / "project" * "*.scala").get
