@@ -19,20 +19,20 @@ object MiscPlugin extends AutoPlugin {
 
     def scalaPartV = scalaVersion(CrossVersion.partialVersion)
 
-  val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
+    val noDocs    = Def.settings(sources in (Compile, doc) := Nil, publishArtifact in (Compile, packageDoc) := false)
     val noSources = Def.settings(publishArtifact in (Compile, packageSrc) := false)
-  val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
-  val noPublish = Def.settings(
+    val noPackage = Def.settings(Keys.`package` := file(""), packageBin := file(""), packagedArtifacts := Map())
+    val noPublish = Def.settings(
       makePom         := file(""),
       deliver         := file(""),
       deliverLocal    := file(""),
-    publish         := {},
-    publishLocal    := {},
-    publishM2       := {},
+      publish         := {},
+      publishLocal    := {},
+      publishM2       := {},
       publishArtifact := false,
-    publishTo       := Some(Resolver.file("devnull", file("/dev/null")))
-  )
-  val noArtifacts = Def.settings(noPackage, noPublish)
+      publishTo       := Some(Resolver.file("devnull", file("/dev/null")))
+    )
+    val noArtifacts = Def.settings(noPackage, noPublish)
 
     implicit def addRemoveOption[T]: AddRemoveOption[T] = new AddRemoveOption[T]
     class AddRemoveOption[T] extends AnyRef
@@ -46,13 +46,13 @@ object MiscPlugin extends AutoPlugin {
       def removeValues(a: Seq[T], b: Option[T]): Seq[T] = b.fold(a)(a filterNot _.==)
     }
 
-  def wordSeq(s: String): immutable.Seq[String] = (s split "\\s+" filterNot (_ == "")).to[immutable.Seq]
+    def wordSeq(s: String): immutable.Seq[String] = (s split "\\s+" filterNot (_ == "")).to[immutable.Seq]
 
     implicit object AddRemoveWords extends AnyRef
         with Append.Values[Seq[String], String]
         with Remove.Values[Seq[String], String]
     {
-    def appendValues(a: Seq[String], b: String): Seq[String] = a ++ wordSeq(b)
+      def appendValues(a: Seq[String], b: String): Seq[String] = a ++ wordSeq(b)
       def removeValues(a: Seq[String], b: String): Seq[String] = a filterNot wordSeq(b).contains
   }
 
