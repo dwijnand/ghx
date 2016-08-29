@@ -46,19 +46,17 @@ scalacOptions in Global in console -= "-Ywarn-unused-import"
 val circeVersion = settingKey[String]("")
 circeVersion := "0.4.1"
 
-libraryDependencies in coreJVM += "io.circe" %%% "circe-core"    % circeVersion.value
-libraryDependencies in coreJS  += "io.circe" %%% "circe-core"    % circeVersion.value
-libraryDependencies in coreJVM += "io.circe" %%% "circe-generic" % circeVersion.value
-libraryDependencies in coreJS  += "io.circe" %%% "circe-generic" % circeVersion.value
-libraryDependencies in coreJVM += "io.circe" %%% "circe-parser"  % circeVersion.value
-libraryDependencies in coreJS  += "io.circe" %%% "circe-parser"  % circeVersion.value
-libraryDependencies in coreJVM += "fr.hmil"  %%% "roshttp"       % "1.0.1"
-libraryDependencies in coreJS  += "fr.hmil"  %%% "roshttp"       % "1.0.1"
+libraryDependencies in coreJVM += "io.circe"     %%% "circe-core"    % circeVersion.value
+libraryDependencies in coreJS  += "io.circe"     %%% "circe-core"    % circeVersion.value
+libraryDependencies in coreJVM += "io.circe"     %%% "circe-generic" % circeVersion.value
+libraryDependencies in coreJS  += "io.circe"     %%% "circe-generic" % circeVersion.value
+libraryDependencies in coreJVM += "io.circe"     %%% "circe-parser"  % circeVersion.value
+libraryDependencies in coreJS  += "io.circe"     %%% "circe-parser"  % circeVersion.value
+libraryDependencies in coreJVM += "fr.hmil"      %%% "roshttp"       % "1.0.1"
+libraryDependencies in coreJS  += "fr.hmil"      %%% "roshttp"       % "1.0.1"
+libraryDependencies in coreJVM += "com.dwijnand" %%  "tabular"       % "0.1.0"
 
-libraryDependencies in repl += "com.dwijnand" %% "tabular" % "0.1.0"
-
-initialCommands in Global in console += "\nimport ghx._"
-initialCommands in repl   in console += "\nimport ghx.repl._"
+initialCommands in Global in console += "\nimport ghx._, impl._, repl._"
 initialCommands in repl   in console += "\nimport tabular._"
 
 console in Compile := (console in Compile in repl).value
